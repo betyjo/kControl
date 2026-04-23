@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-[#12100e] text-[#e7dcca] font-sans;
+}
+
+@layer components {
+  .card {
+    @apply bg-[#1c1a17] p-4 rounded-xl shadow-md;
+  }
+
+  .sidebar-btn {
+    @apply block px-4 py-2 rounded-lg bg-[#2a241e]
+           hover:bg-[#3a2f26] transition;
+  }
+
+  .btn-primary {
+    @apply bg-[#3a2f26] px-4 py-2 rounded-lg
+           hover:bg-[#4a3a2f] transition;
+  }
+}
