@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import api from "@/lib/api";
 
 export default function ComplaintsPage() {
   const [form, setForm] = useState({
@@ -10,15 +11,32 @@ export default function ComplaintsPage() {
     description: "",
   });
 
+  const [message, setMessage] = useState({ type: "", text: "" });
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form); // later connect to backend
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      await api.post("/complaints", { 
+        category: form.category, 
+        description: form.description 
+      });
+      setMessage({ type: "success", text: "Successfully submitted your complaint!" });
+      setForm({ name: "", account: "", category: "", description: "" });
+    } catch (err: any) {
+      setMessage({ type: "error", text: "Failed to submit. Are you logged in?" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,6 +52,17 @@ export default function ComplaintsPage() {
             Report issues related to water usage, billing, or service disruptions.
           </p>
         </div>
+
+        {/* Status Message */}
+        {message.text && (
+          <div className={`mb-6 p-4 rounded-lg text-sm ${
+            message.type === "success" 
+            ? "bg-green-500/20 border border-green-500/50 text-green-200" 
+            : "bg-red-500/20 border border-red-500/50 text-red-200"
+          }`}>
+            {message.text}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -110,7 +139,7 @@ export default function ComplaintsPage() {
           <button
             type="submit"
             className="w-full bg-[#3a2f26] py-2 rounded-lg
-                       hover:bg-[#4a3a2f] transition shadow-md"
+                       hover:bg-[#4a3a2f] transition shadow-md cursor-pointer"
           >
             Submit Complaint
           </button>

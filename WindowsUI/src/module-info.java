@@ -1,8 +1,1 @@
-/**
- * 
- */
-/**
- * 
- */
-module windowsUI {
-}
+/* Module descriptor removed for non-modular build */

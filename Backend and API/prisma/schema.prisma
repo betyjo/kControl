@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  password      String
+  name          String?
+  accountNumber String      @unique
+  role          Role        @default(USER)
+  meters        Meter[]
+  bills         Bill[]
+  complaints    Complaint[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Meter {
+  id           String    @id @default(uuid())
+  serialNumber String    @unique
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String
+  status       String    @default("ACTIVE")
+  readings     Reading[]
+  createdAt    DateTime  @default(now())
+}
+
+model Reading {
+  id          String   @id @default(uuid())
+  meter       Meter    @relation(fields: [meterId], references: [id])
+  meterId     String
+  consumption Float
+  timestamp   DateTime @default(now())
+}
+
+model Bill {
+  id        String     @id @default(uuid())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+  amount    Float
+  status    BillStatus @default(UNPAID)
+  dueDate   DateTime
+  createdAt DateTime   @default(now())
+}
+
+model Complaint {
+  id          String          @id @default(uuid())
+  user        User            @relation(fields: [userId], references: [id])
+  userId      String
+  category    String
+  description String
+  status      ComplaintStatus @default(PENDING)
+  createdAt   DateTime        @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BillStatus {
+  PAID
+  UNPAID
+  OVERDUE
+}
+
+enum ComplaintStatus {
+  PENDING
+  RESOLVED
+}

@@ -64,11 +64,8 @@
 //   );
 // }
 
+import { redirect } from "next/navigation";
+
 export default function Home() {
-  return (
-    <div className="card">
-      <h1>Welcome to Kora Control</h1>
-      <p>Smart Water Monitoring System</p>
-    </div>
-  );
+  redirect("/auth/register");
 }
