@@ -1,28 +1,21 @@
 package application;
 
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
-public class Main extends Application {
+public class Main {
 
-    @Override
-    public void start(Stage Stage) throws Exception{
-    	
-    	//Stage stage = new stage();
-		
-		Group root = new Group();
-        Scene scene = new Scene (root, Color.GREEN);
-        Stage.setTitle("lalala");
-        Stage.setScene(scene);
-        Stage.show();
+    private static void createAndShowGui() {
+        JFrame frame = new JFrame("lalala");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.add(new JLabel("Hello"));
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        launch(args);
+        SwingUtilities.invokeLater(Main::createAndShowGui);
     }
 }
