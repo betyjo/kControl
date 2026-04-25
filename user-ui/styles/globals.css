@@ -5,9 +5,22 @@ body {
 }
 
 @layer components {
-  .card {
-    @apply bg-[#1c1a17] p-4 rounded-xl shadow-md;
-  }
+ .card {
+  @apply bg-[#1c1a17] p-5 rounded-xl transition-all duration-500;
+
+  /* Base shadow */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover {
+  /* Glow effect */
+  box-shadow: 
+    0 0 2px rgba(122, 92, 70, 0.4),
+    0 0 2px rgba(122, 92, 70, 0.4),
+    0 0 2px rgba(247, 227, 212, 0.2);
+
+  transform: translateY(-300px) scale(1.02);
+}
 
   .sidebar-btn {
     @apply block px-4 py-2 rounded-lg bg-[#2a241e]
