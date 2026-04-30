@@ -1,37 +1,36 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#1c1a17] text-[#e7dcca] border-t border-[#3a2f26] rounded-t-3xl">
-      <div className="max-w-7xl mx-auto px-8 py-12">
+    <footer className="bg-background text-muted-foreground border-t">
+      <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm">
 
           {/* Left: System Info */}
-          <div>
-            <p className="font-semibold tracking-wide">
-              Kora Control – Smart Water Management System
+          <div className="text-center md:text-left">
+            <p className="font-bold text-foreground">
+              Kora Control
             </p>
-            <p className="text-[#cfc3b3] mt-2">
-              Providing real-time monitoring, billing, and customer service
-              solutions for efficient water resource management.
+            <p className="mt-2 max-w-xs">
+              Providing real-time monitoring and efficient water resource management solutions.
             </p>
           </div>
 
           {/* Center: Navigation / Policies */}
-          <div className="flex gap-6">
-            <span className="hover:text-white transition cursor-pointer">
+          <div className="flex gap-6 font-medium">
+            <span className="hover:text-primary transition cursor-pointer">
               Privacy Policy
             </span>
-            <span className="hover:text-white transition cursor-pointer">
+            <span className="hover:text-primary transition cursor-pointer">
               Terms of Service
             </span>
-            <span className="hover:text-white transition cursor-pointer">
-              Support Center
+            <span className="hover:text-primary transition cursor-pointer">
+              Support
             </span>
           </div>
 
           {/* Right: Copyright */}
-          <div className="text-[#cfc3b3] text-center md:text-right">
-            <p>© {new Date().getFullYear()} Kora Control</p>
-            <p>All rights reserved.</p>
+          <div className="text-center md:text-right">
+            <p className="font-medium">© {new Date().getFullYear()} Kora Control</p>
+            <p className="text-xs opacity-70">All rights reserved.</p>
           </div>
 
         </div>

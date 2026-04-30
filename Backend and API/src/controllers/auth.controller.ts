@@ -5,6 +5,48 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
+export const getMe = async (req: any, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, email: true, name: true, accountNumber: true, role: true, createdAt: true },
+    });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch profile' });
+  }
+};
+
+export const updateMe = async (req: any, res: Response) => {
+  const { name, email, currentPassword, newPassword } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const updateData: any = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+
+    if (newPassword) {
+      if (!currentPassword) return res.status(400).json({ error: 'Current password is required to set a new password.' });
+      const isValid = await bcrypt.compare(currentPassword, user.password);
+      if (!isValid) return res.status(401).json({ error: 'Current password is incorrect.' });
+      updateData.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: req.user.id },
+      data: updateData,
+      select: { id: true, email: true, name: true, accountNumber: true, role: true, createdAt: true },
+    });
+    res.json({ message: 'Profile updated successfully.', user: updated });
+  } catch (error: any) {
+    if (error.code === 'P2002') return res.status(400).json({ error: 'That email is already in use.' });
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+};
+
 export const register = async (req: Request, res: Response) => {
   const { email, password, name, accountNumber } = req.body;
 

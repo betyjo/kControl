@@ -1,5 +1,6 @@
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Header } from "@/components/header";
 import Footer from "../../components/Footer";
 
 export default function MainLayout({
@@ -8,15 +9,15 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-4">{children}</main>
-      </div>
-
-      <Footer />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Header />
+        <main className="flex-1 p-6 overflow-auto">
+          {children}
+        </main>
+        <Footer />
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
